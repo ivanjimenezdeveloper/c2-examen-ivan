@@ -1,14 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { ContextoAmigos } from "../contexts/ContextoAmigos";
 
 export const Formulario = (props) => {
-  const {
-    addAmigo,
-    setFormularioActivo,
-    editaAmigo,
-    editando,
-    setEditando,
-    amigoEditar,
-  } = props;
+  const { addAmigo, editaAmigo, editando, amigoEditar } = props;
+  const { setFormularioActivo, setEditando } = useContext(ContextoAmigos);
 
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");

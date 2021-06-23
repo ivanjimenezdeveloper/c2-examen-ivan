@@ -1,13 +1,11 @@
+import { useContext } from "react";
 import { FaTimes, FaPencilAlt, FaStar } from "react-icons/fa";
+import { ContextoAmigos } from "../contexts/ContextoAmigos";
 
 export const ListadoAmigos = (props) => {
-  const {
-    amigos,
-    deleteAmigo,
-    setEditando,
-    setAmigoEditar,
-    setFormularioActivo,
-  } = props;
+  const { setFormularioActivo, setEditando } = useContext(ContextoAmigos);
+
+  const { amigos, deleteAmigo, setAmigoEditar } = props;
 
   const getEstrellas = (valoracion) => {
     const arrayElementos = new Array(valoracion);

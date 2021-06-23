@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Formulario } from "./components/Formulario";
 import { ListadoAmigos } from "./components/ListadoAmigos";
+import { ContextoAmigos } from "./contexts/ContextoAmigos";
 
 function App() {
   const urlAPI = "http://localhost:3001/amigos/";
@@ -69,7 +70,12 @@ function App() {
   useEffect(() => getAmigos(), []);
 
   return (
-    <>
+    <ContextoAmigos.Provider
+      value={{
+        setFormularioActivo,
+        setEditando,
+      }}
+    >
       <div className="container">
         <div className="row">
           <h1>Gestión de mis {amigos.length} Amigos</h1>
@@ -85,10 +91,8 @@ function App() {
           {formularioActivo && (
             <Formulario
               addAmigo={addAmigo}
-              setFormularioActivo={setFormularioActivo}
               editaAmigo={editaAmigo}
               editando={editando}
-              setEditando={setEditando}
               amigoEditar={amigoEditar}
             />
           )}
@@ -97,13 +101,11 @@ function App() {
           <ListadoAmigos
             amigos={amigos}
             deleteAmigo={deleteAmigo}
-            setEditando={setEditando}
             setAmigoEditar={setAmigoEditar}
-            setFormularioActivo={setFormularioActivo}
           />
         </main>
       </div>
-    </>
+    </ContextoAmigos.Provider>
   );
 }
 
