@@ -4,7 +4,7 @@ import { Formulario } from "./components/Formulario";
 import { ListadoAmigos } from "./components/ListadoAmigos";
 
 function App() {
-  const urlAPI = "http://localhost:3001/amigos";
+  const urlAPI = "http://localhost:3001/amigos/";
   const [amigos, setAmigos] = useState([]);
   const [formularioActivo, setFormularioActivo] = useState(false);
   const getAmigos = async () => {
@@ -27,6 +27,16 @@ function App() {
       setAmigos(amigosTemp);
     }
     setFormularioActivo(false);
+  };
+  const deleteAmigo = async (id) => {
+    const metodo = {
+      method: "DELETE",
+    };
+    const response = await fetch(urlAPI + id, metodo);
+
+    if (response.ok) {
+      setAmigos(amigos.filter((amigo) => (amigo.id !== id ? amigo : "")));
+    }
   };
 
   useEffect(() => getAmigos(), []);
@@ -52,7 +62,7 @@ function App() {
           )}
         </div>
         <main className="row mainContainer text-light">
-          <ListadoAmigos amigos={amigos} />
+          <ListadoAmigos amigos={amigos} deleteAmigo={deleteAmigo} />
         </main>
       </div>
     </>

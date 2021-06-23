@@ -1,7 +1,7 @@
 import { FaTimes, FaPencilAlt, FaStar } from "react-icons/fa";
 
 export const ListadoAmigos = (props) => {
-  const { amigos } = props;
+  const { amigos, deleteAmigo } = props;
   const getEstrellas = (valoracion) => {
     const arrayElementos = new Array(valoracion);
     for (let index = 0; index < valoracion; index++) {
@@ -14,8 +14,8 @@ export const ListadoAmigos = (props) => {
     <>
       {amigos.map((amigo) => {
         return (
-          <div className="col-4 contenedor bg-primary ">
-            <FaPencilAlt /> <FaTimes />
+          <div className="col-4 contenedor bg-primary" key={amigo.id}>
+            <FaPencilAlt /> <FaTimes onClick={() => deleteAmigo(amigo.id)} />
             <div>
               <p>Nombre: {amigo.nombre}</p>
             </div>
@@ -24,7 +24,7 @@ export const ListadoAmigos = (props) => {
             </div>
             <div>
               <p>
-                Valoración:{" "}
+                Valoración:
                 {getEstrellas(amigo.valoracion).map((estrella) => estrella)}
               </p>
             </div>
