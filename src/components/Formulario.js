@@ -16,7 +16,6 @@ export const Formulario = (props) => {
   };
   const setAmigoFormSegunEditar = useCallback(
     (editando) => {
-      debugger;
       if (editando) {
         setNombre(amigoEditar.nombre);
         setValoracion(amigoEditar.valoracion);

@@ -14,11 +14,13 @@ function App() {
     apellido: "",
     valoracion: 0,
   });
+
   const getAmigos = async () => {
     const response = await fetch(urlAPI);
     const json = await response.json();
     setAmigos(json);
   };
+
   const addAmigo = async (amigo) => {
     const metodo = {
       method: "POST",
@@ -36,6 +38,7 @@ function App() {
     }
     setFormularioActivo(false);
   };
+
   const deleteAmigo = async (id) => {
     const metodo = {
       method: "DELETE",
