@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const Formulario = (props) => {
-  const { addAmigo, setFormularioActivo } = props;
+  const {
+    addAmigo,
+    setFormularioActivo,
+    editaAmigo,
+    editando,
+    setEditando,
+    amigoEditar,
+  } = props;
 
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -12,16 +19,40 @@ export const Formulario = (props) => {
     apellido,
     valoracion,
   };
+  const setAmigoFormSegunEditar = useCallback(
+    (editando) => {
+      debugger;
+      if (editando) {
+        setNombre(amigoEditar.nombre);
+        setValoracion(amigoEditar.valoracion);
+        setApellido(amigoEditar.apellido);
+      }
+    },
+    [amigoEditar.apellido, amigoEditar.nombre, amigoEditar.valoracion]
+  );
 
-  const sumbitAmigo = (e, amigo) => {
+  useEffect(
+    () => setAmigoFormSegunEditar(editando),
+    [editando, setAmigoFormSegunEditar]
+  );
+
+  const cancelar = () => {
+    setFormularioActivo(false);
+    setEditando(false);
+  };
+  const sumbitAmigo = (e, amigo, editando) => {
     e.preventDefault();
-    addAmigo(amigo);
+    if (editando) {
+      editaAmigo(amigo, amigoEditar.id);
+    } else {
+      addAmigo(amigo);
+    }
   };
   return (
     <form
       noValidate
       className="col-10"
-      onSubmit={(e) => sumbitAmigo(e, amigoForm)}
+      onSubmit={(e) => sumbitAmigo(e, amigoForm, editando)}
     >
       <div className="row">
         <div className="form-group inputTexto">
@@ -57,12 +88,12 @@ export const Formulario = (props) => {
       </div>
       <div className="row">
         <button type="submit" className="btn bg-primary text-light">
-          Crear
+          {editando ? "Edita" : "Crea"}
         </button>
         <button
           type="button"
           className="btn bg-primary text-light"
-          onClick={() => setFormularioActivo(false)}
+          onClick={() => cancelar()}
         >
           Cancelar
         </button>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaTimes, FaPencilAlt, FaStar } from "react-icons/fa";
 import { Formulario } from "./components/Formulario";
 import { ListadoAmigos } from "./components/ListadoAmigos";
 
@@ -7,6 +6,13 @@ function App() {
   const urlAPI = "http://localhost:3001/amigos/";
   const [amigos, setAmigos] = useState([]);
   const [formularioActivo, setFormularioActivo] = useState(false);
+  const [editando, setEditando] = useState(false);
+  const [amigoEditar, setAmigoEditar] = useState({
+    id: -1,
+    nombre: "",
+    apellido: "",
+    valoracion: 0,
+  });
   const getAmigos = async () => {
     const response = await fetch(urlAPI);
     const json = await response.json();
@@ -18,6 +24,7 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(amigo),
     };
+
     const response = await fetch(urlAPI, metodo);
 
     if (response.ok) {
@@ -32,6 +39,7 @@ function App() {
     const metodo = {
       method: "DELETE",
     };
+
     const response = await fetch(urlAPI + id, metodo);
 
     if (response.ok) {
@@ -39,12 +47,32 @@ function App() {
     }
   };
 
+  const editaAmigo = async (amigo, id) => {
+    amigo.id = id;
+    const metodo = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(amigo),
+    };
+
+    const response = await fetch(urlAPI + amigo.id, metodo);
+
+    if (response.ok) {
+      const amigo = await response.json();
+      setAmigos(
+        amigos.map((amigoMap) => (amigoMap.id === amigo.id ? amigo : amigoMap))
+      );
+    }
+    setFormularioActivo(false);
+  };
+
   useEffect(() => getAmigos(), []);
+
   return (
     <>
       <div className="container">
         <div className="row">
-          <h1>Gestión de mis X Amigos</h1>
+          <h1>Gestión de mis {amigos.length} Amigos</h1>
         </div>
         <div className="row">
           <button
@@ -58,11 +86,21 @@ function App() {
             <Formulario
               addAmigo={addAmigo}
               setFormularioActivo={setFormularioActivo}
+              editaAmigo={editaAmigo}
+              editando={editando}
+              setEditando={setEditando}
+              amigoEditar={amigoEditar}
             />
           )}
         </div>
         <main className="row mainContainer text-light">
-          <ListadoAmigos amigos={amigos} deleteAmigo={deleteAmigo} />
+          <ListadoAmigos
+            amigos={amigos}
+            deleteAmigo={deleteAmigo}
+            setEditando={setEditando}
+            setAmigoEditar={setAmigoEditar}
+            setFormularioActivo={setFormularioActivo}
+          />
         </main>
       </div>
     </>
