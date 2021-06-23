@@ -21,30 +21,33 @@ export const ListadoAmigos = (props) => {
     setAmigoEditar(amigo);
     setFormularioActivo(true);
   };
+
   return (
     <>
       {amigos.map((amigo) => {
         return (
-          <div className="col-4 contenedor bg-primary" key={amigo.id}>
-            <FaPencilAlt
-              onClick={() => setEditarAmigo(amigo)}
-              key={`pencil.${amigo.id}`}
-            />
-            <FaTimes
-              onClick={() => deleteAmigo(amigo.id)}
-              key={`borrar.${amigo.id}`}
-            />
-            <div>
-              <p>{`Nombre: ${amigo.nombre}`}</p>
-            </div>
-            <div>
-              <p>{`Apellido: ${amigo.apellido}`}</p>
-            </div>
-            <div>
-              <p>
-                Valoración:
-                {getEstrellas(amigo).map((estrella) => estrella)}
-              </p>
+          <div className="col-4 pl-0 " key={amigo.id}>
+            <div className="contenedor bg-primary">
+              <FaPencilAlt
+                onClick={() => setEditarAmigo(amigo)}
+                key={`pencil.${amigo.id}`}
+              />
+              <FaTimes
+                onClick={() => deleteAmigo(amigo.id)}
+                key={`borrar.${amigo.id}`}
+              />
+              <div>
+                <p>{`Nombre: ${amigo.nombre}`}</p>
+              </div>
+              <div>
+                <p>{`Apellido: ${amigo.apellido}`}</p>
+              </div>
+              <div>
+                <p>
+                  Valoración:
+                  {getEstrellas(amigo).map((estrella) => estrella)}
+                </p>
+              </div>
             </div>
           </div>
         );
